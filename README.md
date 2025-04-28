@@ -20,3 +20,7 @@
         }
         ```
         - Now type `npx sequelize-cli db:create` 
+
+## Project Pattern
+
+- This Project follows controller service repository pattern for each db model i.e. City
