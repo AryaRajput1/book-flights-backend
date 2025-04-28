@@ -1,4 +1,5 @@
 const { City } = require("../models")
+const {Op} = require('sequelize');
 
 class CityRepository {
 
@@ -6,7 +7,7 @@ class CityRepository {
         try {
             return await City.create({ name })
         } catch (error) {
-            console.log('Error creating city.')
+            console.log('Error creating city.', error)
             throw error
         }
     }
@@ -22,14 +23,11 @@ class CityRepository {
 
     static async updateCity(id, name) {
         try {
-            await City.update(
-                { name },
-                {
-                    where: {
-                        id: id,
-                    },
-                },
-            );
+            const city = await City.findByPk(id)
+            city.name = name
+            city.save()
+
+            return city
         } catch (error) {
             console.log('Error updating city.')
             throw error
@@ -46,6 +44,25 @@ class CityRepository {
 
         } catch (error) {
             console.log('Error creating city.')
+            throw error
+        }
+    }
+
+    static async getAllCities(filter) {
+        try {
+            if (filter.name) {
+                return await City.findAll({
+                    where: {
+                        name: {
+                            [Op.like]: `${filter.name}%`,
+                        },
+                      },
+                })
+            }
+            return await City.findAll()
+
+        } catch (error) {
+            console.log('Error getting all cities.')
             throw error
         }
     }

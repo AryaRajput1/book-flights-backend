@@ -1,4 +1,4 @@
-const { CityController } = require("./cityController");
+const CityController = require("./cityController");
 
 module.exports = {
     CityController
